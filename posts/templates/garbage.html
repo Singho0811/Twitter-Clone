@@ -1,0 +1,545 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+
+<section id="title">
+  <a href="/">
+    <div class="white-logo">
+      <img
+        class="white-twitter"
+        src="/static/img/white-twitter.png"
+        alt="White twitter logo"
+      />
+    </div>
+  </a>
+  <h1>Home</h1>
+  <section class="content">
+    <section class="post_form">
+      <form action="/" method="POST" enctype="multipart/form-data"></form>
+
+      <form method="post">
+        {% csrf_token %}
+        <input
+          class="name-input"
+          type="text"
+          name="name"
+          placeholder="Name"
+          autocomplete="off"
+          required
+        />
+        <textarea
+          name="body"
+          placeholder="What's Happening?"
+          required
+        ></textarea>
+        <input
+          id="upload-file"
+          type="file"
+          value="Choose File"
+          name="image"
+        /><br />
+        <label class="upload" for="upload-file">
+          <i class="material-icons">add_photo_alternate</i>
+        </label>
+        <input id="tweet-button" type="submit" value="Tweet" />
+      </form>
+    </section>
+    <div class="divider"></div>
+    <section class="posts">
+      <ul>
+        {% for post in posts %}
+        <li>
+          <div class="logo">
+            <img
+              class="menu_icon js-menu-icon"
+              src="{% static 'img/menu.png' %}"
+            />
+          </div>
+          <div class="menu">
+            <a href="/delete/{{ post.id }}/">Delete</a>
+          </div>
+          <div class="logo-user">
+            <img src="{% static 'img/profile-user.png' %}" />
+          </div>
+          <div class="name_body">
+            <div class="name">{{ post.name }}</div>
+            <div class="datetime">{{ post.created_at }}</div>
+            <p>{{ post.body }}</p>
+            <a href="/delete/{{ post.id }}/">delete</a>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </section>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.js"
+      integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+      crossorigin="anonymous"
+    ></script>
+    <script src="{% static 'js/posts.js' %}"></script>
+  </section>
+
+  {% endblock %}
+</section>
+
+
+
+
+
+
+
+{% extends 'base.html' %} {% block content %} {% load static %}
+
+<section id='title'>
+    <a href="/">
+        <div class="white-logo">
+            <img class="white-twitter" src="/static/img/white-twitter.png" alt="White twitter logo">
+        </div>
+    </a>
+    <h1>Edit</h1>
+</section>
+<section class="content">
+    <section class="post_form">
+    <form action="/edit/{{post.id}}/" method='POST' enctype="multipart/form-data">
+        {% csrf_token %}
+        <input class="name-input" type="text" name="name" placeholder="Name" value="{{post.name}}" required />
+        <textarea name="body" placeholder="What's Happening?" required>{{post.body}}</textarea>
+        <label for={{post.name}}></label><br>
+            <!-- <input type="file" name="image"> -->
+            <input id="upload-file" type="file" value="Choose File" name="image">
+            <label class="upload-edit" for="upload-file">
+                <i class="material-icons">add_photo_alternate</i>
+            </label><br>
+        {% if post.image.url %}
+        <img class="post-border" src="{{ post.image.url }}">
+        {% endif %}
+    <div class="update-edit-buttons">
+        <a class="cancel-anchor" href="/">
+            <input class="cancel-button" type='button' id='delete' value="Cancel">
+        <a/>
+        <input id="update-button" type='submit' value="Update">
+    </div>
+    </form> 
+</section>
+</section>
+
+{% endblock%}
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      property="og:image"
+      content="https://res.cloudinary.com/jz333/image/upload/v1635278376/kqznzfcs9b5suwlkcrwk.png"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="/static/img/twitter.png" />
+    <script src=""></script>
+    <title>Twitter Clone</title>
+    {% load static %}
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" />
+  </head>
+  <header>
+
+  </header>
+  <body>
+    {% block content %} {{ content }} {% endblock %}
+  </body>
+</html>
+
+
+
+
+
+
+
+
+/*
+Common
+***************************/
+
+* {
+    margin: 0;
+    padding: 0;
+  }
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background-color: white;
+    color: #fff;
+    font-family: Helvetica, sans-serif;
+}
+
+.content {
+    max-width: 600px;
+    height: 0 auto;
+    margin: 0 auto;
+    border-left: 1px solid rgba(204, 204, 204, 0.5);
+    border-right: 1px solid rgba(204, 204, 204, 0.5);
+}
+
+/*
+Post
+***************************/
+
+#title {
+    position: relative;
+    display: flex;
+    margin: 0 auto;
+    max-width: 600px;
+    height: 7.5%;
+    border-bottom: rgba(204, 204, 204, 0.5);
+    margin: 0 auto;
+    border-left: 1px solid rgba(204, 204, 204, 0.5);
+    border-right: 1px solid rgba(204, 204, 204, 0.5);
+}
+
+h1 {
+    padding-left: 17px;
+    padding-top: 12px;
+    font-size: 20px;
+}
+
+.post_form {
+    padding: 20px 40px;
+    border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+    border-top: 1px solid rgba(204, 204, 204, 0.5);
+}
+
+.post_form input {
+    width: 70%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+}
+
+.post_form textarea {
+    width: 87%;
+    height: 80px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+    background-color: whitesmoke;
+}
+
+textarea {
+    font-size: 19px;
+    background-color: #15202b;
+    color: #fff;
+    font-family: Helvetica, sans-serif;
+    resize: none;
+}
+
+.posts ul {
+    padding: 0;
+}
+
+.posts li {
+    display: flex;
+    border-bottom: 1px solid #ccc;
+    padding: 20px 40px;
+    list-style: none;
+    position: relative;
+}
+
+.posts li .menu_icon {
+    width: 20px;
+    position: absolute;
+    top: 18px;
+    right: 30px;
+    z-index: 999;
+}
+
+.posts li .menu {
+    display: none;
+    position: absolute;
+    top: 40px;
+    right: 15px;
+    border: 1px solid #ccc;
+    background-color: #ccc !important;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 3px;
+}
+
+.posts li .menu a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.posts li .logo {
+    flex-basis: 15%;
+}
+
+.posts li .logo img {
+    width: 5%;
+    left: 94%;
+}
+
+.posts li .name_body {
+    flex-basis: 85%;
+}
+
+.posts li .name_body .name {
+    font-weight: bold;
+}
+
+.posts li .name_body .datetime {
+    color: gray;
+}
+
+.post-border {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    width: 90%;
+}
+
+.upload {
+    position: relative;
+    left: 2%;
+}
+
+/******************
+Edit upload
+*****************/
+
+.upload-edit {
+    position: relative;
+    left: 2%;
+}
+
+@media screen and (max-width: 500px) {
+    .posts li .name_body .name {
+        font-size: 20px;
+    }
+
+    #tweet-button {
+        left: 57% !important
+    }
+}
+
+.name-input {
+    width: 86.3% !important;
+    background-color: white;
+    color: #fff;
+    font-size: 15px;
+}
+
+#tweet-button {
+    border-radius: 20px;
+    background-color: #209bf0;
+    width: 80px;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+    position: relative;
+    left: 69%;
+}
+
+#tweet-button:hover {
+    background-color: #1e92dc;
+}
+
+.update-edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 9.5%;
+}
+
+#update-button {
+    border-radius: 20px;
+    background-color: #209bf0;
+    cursor: pointer;
+    width: 80px;
+    height: 35px;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+}
+
+.cancel-button {
+    border-radius: 20px;
+    background-color: #dc3545;
+    margin-right: 0.5em;
+    align-items: right;
+    width: 80px !important;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    border: none !important;
+}
+
+.cancel-anchor {
+    color: #15202b;
+}
+  
+#upload-file {
+    color: #fff;
+    display: none;
+    overflow: hidden;
+}
+  
+.material-icons {
+    color: #209bf0;
+    cursor: pointer;
+}
+  
+.material-icons:hover {
+    color: #1e92dc;
+}
+
+/*********************
+  Like Button
+**********************/
+
+.like-button {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
+  
+.like-heart {
+    margin-right: 5px;
+    position: relative;
+    top: 2.5px;
+    width: 17px;
+}
+  
+#likes-form {
+    color: gray;
+    padding-top: 20px;
+    border-radius: 15px;
+}
+  
+.white-logo {
+    width: 40px;
+    position: relative;
+    padding: 15%;
+}
+  
+.white-logo:hover {
+    background-color: #253340;
+    border-radius: 100px;
+}
+  
+.white-twitter {
+    width: 40px;
+    position: relative;
+}
+  
+.posts li:hover {
+    background-color: #253340;
+}
+  
+.divider {
+    background-color: whitesmoke;
+    height: 12px;
+    border-bottom: 1px solid rgba(204, 204, 204, 0.5);
+}
+.logo-user img{
+    width: 76%;
+}
+.logo-user{
+    flex-basis:10%;
+}
+
+.name{
+    background-color: #209bf0;
+}
+
+
+
+
+
+
+
+from urllib import request
+from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from .models import Post
+from .forms import PostForm, PictureForm
+from django.urls import reverse_lazy, reverse
+
+from cloudinary.forms import cl_init_js_callbacks
+
+def index(request):
+    # If the method is POST
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        # If the form is valid
+        if form.is_valid():
+            # Yes, Save
+            form.save()
+
+            # Redirect to Home
+            return HttpResponseRedirect('/')
+        
+        else:
+            # No, Show Error
+            return HttpResponseRedirect(form.error.as_json())
+
+
+    # Get all posts, limit = 20
+    posts = Post.objects.all().order_by('-created_at')[:20]
+
+    # Show
+    return render(request, 'posts.html',
+    {'posts': posts})
+
+    
+def delete(request, post_id):
+     # Find user
+     post = Post.objects.get(id = post_id)
+     post.delete()
+     return HttpResponseRedirect('/')
+    
+# edit button to edit our posts
+
+def edit(request, post_id):
+    # Find post
+    post = Post.objects.get(id=post_id)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+        else:
+            return HttpResponseRedirect(form.errors.as_json())
+
+    form = PostForm
+    # form = PostForm
+    
+    # show
+    return render(request, 'edit.html', {'post': post, 'form': form})
+
+
+# function for the like button for our posts
+
+def LikeView(request, post_id):
+    post = Post.objects.get(id=post_id)
+    new_value = post.likes + 1
+    post.likes = new_value
+    post.save()
+    return HttpResponseRedirect('/')
