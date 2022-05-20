@@ -8,12 +8,13 @@
                 
                 
 ##Tech used :
-          * Html
-          * Css
-          * Bootstrap
-          * Javascript / JQuery
-          * Django
-          * Cloudinary (To host uploaded images on CDN)
+          1. Html
+          2. Css
+          3. Bootstrap
+          4. Javascript / JQuery
+          5. Django
+          6. Cloudinary (To host uploaded images on CDN)
+          7. Deployed on Heroku
           
     
     
